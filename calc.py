@@ -1,4 +1,5 @@
 from tkinter import *
+import ast
 
 root=Tk()
 
@@ -13,9 +14,31 @@ def get_operation(operator):
   length = len(operator)
   display.insert(i,operator)
   i+=length
-  
+
 def clear_all():
   display.delete(0,END)
+
+def calculate():
+  entire_string = display.get()
+  try:
+    node = ast.parse(entire_string,mode="eval")
+    result = eval(compile(node, '<string>', 'eval'))
+    clear_all()
+    display.insert(0,result)
+  except Exception:
+    clear_all()
+    display.insert(0,"Error")
+
+def backspace():
+  entire_string = display.get()
+  if len(entire_string):
+    new_string = entire_string[:-1]
+    clear_all()
+    display.insert(0,new_string)
+  else:
+    clear_all()
+    display.insert(0,"")
+    
 
 display = Entry(root)
 display.grid(row=1, columnspan=6)
@@ -43,5 +66,7 @@ for x in range(4):
       button.grid(row=x+2,column=y+3)
       
 Button(root,text="AC",width=2,height=2,command=clear_all).grid(row=5,column=0)
-Button(root,text="=",width=2,height=2).grid(row=5,column=2)
+Button(root,text="=",width=2,height=2,command=calculate).grid(row=5,column=2)
+Button(root,text="<-",width=2,height=2,command=lambda :backspace()).grid(row=5,column=4)
+
 root.mainloop()
