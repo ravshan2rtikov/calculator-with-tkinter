@@ -1,2 +1,2 @@
 # calculatorInPython
-this is a practice project to create a calculator
+A calculator created with Tkinter in Python
